@@ -1,0 +1,136 @@
+create database rms_v2;
+use rms_v2;
+
+create table if not exists StaffRole(
+	id int NOT NULL PRIMARY KEY,
+    name varchar(255) NOT NULL
+);
+
+create table if not exists Staff(
+	id int NOT NULL PRIMARY KEY,
+    name varchar(255) NOT NULL,
+    password varchar(255) NOT NULL,
+    email varchar(255) NOT NULL,
+    phone_num varchar(17) NOT NULL,
+    emerg_phone_num varchar(255) NOT NULL,
+    profile_pic varchar(255) NULL,
+    role_id int,
+    FOREIGN KEY (role_id) REFERENCES StaffRole(id) ON DELETE SET NULL
+);
+
+create table if not exists StaffAddress(
+	id int NOT NULL PRIMARY KEY,
+    address1 varchar(255) NOT NULL,
+    address2 varchar(255) NULL,
+    address3 varchar(255) NULL,
+    password varchar(255) NOT NULL,
+    postcode varchar(10) NOT NULL,
+    city varchar(50) NOT NULL,
+    state varchar(50) NOT NULL,
+    is_delete int(1) NOT NULL DEFAULT 1,
+    created_date DATETIME NOT NULL,
+    staff_id int,
+    FOREIGN KEY (staff_id) REFERENCES Staff(id) ON DELETE SET NULL
+);
+
+create table if not exists User(
+	id int NOT NULL PRIMARY KEY,
+    name varchar(255) NOT NULL,
+    password varchar(255) NOT NULL,
+    email varchar(255) NOT NULL,
+    phone_num varchar(17) NOT NULL
+);
+
+create table if not exists ShopTable(
+	id int NOT NULL PRIMARY KEY,
+    name varchar(255) NOT NULL,
+    capacity int not null
+);
+
+create table if not exists Voucher(
+	id int NOT NULL PRIMARY KEY,
+    code varchar(255) NOT NULL,
+    name varchar(100) NOT NULL,
+    descriptionrition varchar(255) NOT NULL,
+    stock int NOT NULL,
+    status int(1) NOT NULL DEFAULT 1
+);
+
+create table if not exists VoucherRules(
+	id int NOT NULL PRIMARY KEY,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME NOT NULL,
+    voucher_id int,
+    FOREIGN KEY (voucher_id) REFERENCES Voucher(id) ON DELETE SET NULL
+);
+
+
+create table if not exists ProductCategory(
+	id int NOT NULL PRIMARY KEY,
+    name varchar(255) NOT NULL
+);
+
+create table if not exists Product(
+	id int NOT NULL PRIMARY KEY,
+    name varchar(255) NOT NULL,
+    description varchar(255) NULL,
+    price DECIMAL(10,2) NOT NULL,
+    images varchar(255) NULL,
+    status int(1) NOT NULL DEFAULT 1,
+    is_delete int(1) NOT NULL DEFAULT 1,
+    category_id int,
+    FOREIGN KEY (category_id) REFERENCES ProductCategory(id) ON DELETE SET NULL
+);
+
+create table if not exists Ordered(
+	id int NOT NULL PRIMARY KEY,
+    created_date DATETIME NOT NULL,
+    order_type int(1) NOT NULL DEFAULT 1,
+    collect_date DATE NULL,
+    collect_time TIME NULL,
+    status int(1) NOT NULL DEFAULT 1,
+    user_id int,
+    staff_id int,
+    table_id int,
+    voucher_id int,
+    FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE SET NULL,
+    FOREIGN KEY (staff_id) REFERENCES Staff(id) ON DELETE SET NULL,
+    FOREIGN KEY (table_id) REFERENCES ShopTable(id) ON DELETE SET NULL,
+    FOREIGN KEY (voucher_id) REFERENCES Voucher(id) ON DELETE SET NULL
+);
+
+create table if not exists OrderProduct(
+	id int NOT NULL PRIMARY KEY,
+    qty int NOT NULL,
+    note varchar(20) NULL,
+    order_id int,
+    product_id int,
+    FOREIGN KEY (order_id) REFERENCES Ordered(id) ON DELETE SET NULL,
+    FOREIGN KEY (product_id) REFERENCES Product(id) ON DELETE SET NULL
+);
+
+create table if not exists Feedback(
+	id int NOT NULL PRIMARY KEY,
+    created_date DATETIME NOT NULL,
+    rating int(1) NOT NULL,
+    description varchar(20) NULL,
+    order_id int,
+    user_id int,
+    FOREIGN KEY (order_id) REFERENCES Ordered(id) ON DELETE SET NULL,
+    FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE SET NULL
+);
+
+create table if not exists SystemSetting(
+	id int NOT NULL PRIMARY KEY,
+    created_date DATETIME NOT NULL,
+    image_logo varchar(255) NULL,
+    image_table varchar(255) NULL,
+    aboutus_description varchar(255) NULL,
+    aboutus_video varchar(255) NULL,
+    contact_num varchar(17) NOT NULL,
+    email varchar(255) NULL,
+    map_link varchar(255) NULL,
+    facebook_link varchar(255) NULL,
+    ins_link varchar(255) NULL,
+    whatsapp_link varchar(255) NULL
+);

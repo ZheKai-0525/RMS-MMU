@@ -8,8 +8,21 @@
     defined("PUBLIC_PATH")
         or define("PUBLIC_PATH", realpath(dirname(__FILE__) . '/../public_html'));
 
-    // db connection
-    // ...
+    function db_connection () {
+        $errors = array();
+	    $hostname = "localhost";
+	    $username = "root";
+	    $password = "";
+	    $database = "rms_v2";
+
+        $connect = new mysqli($hostname,$username,$password,$database);
+	
+	    if($connect->connect_error)
+	    {
+		    echo "Failed to connect to MYSQL: " . $connect->connect_error;
+		    exit();
+	    }
+    }
 
     function logout ($user) {
         // to do ...
@@ -78,4 +91,6 @@
 	
 		require_once(TEMPLATES_PATH . "/footer.php");
     }
+
+    db_connection ()
 ?>

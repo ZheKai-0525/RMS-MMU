@@ -62,11 +62,6 @@
 			}
 		}
 
-        require_once(TEMPLATES_PATH . "/header.php");
-	
-		echo "<div id=\"container\">\n"
-		   . "\t<div id=\"content\">\n";
-	
 		if (file_exists($contentFileFullPath) || file_exists($contentFileSubPath)) {
             if (file_exists($contentFileSubPath)) {
                 require_once($contentFileSubPath);
@@ -82,14 +77,6 @@
 			*/
 			require_once(TEMPLATES_PATH . "/error.php");
 		}
-	
-		// close content div
-		echo "\t</div>\n";
-	
-		// close container div
-		echo "</div>\n";
-	
-		require_once(TEMPLATES_PATH . "/footer.php");
     }
 
     db_connection ()

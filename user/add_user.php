@@ -2,7 +2,8 @@
     require_once(realpath(dirname(__FILE__) . "/../resources/config.php"));
 
     // Before run the webpages view, do the autentication
-    user_authorized($roles=array('Admin', 'User'));
+    login_required('staff','');
+    user_authorized($roles=array('staff', 'user'));
 
     // Views function
     if ($_SERVER['REQUEST_METHOD'] == "POST") {

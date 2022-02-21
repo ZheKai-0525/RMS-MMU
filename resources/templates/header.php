@@ -17,3 +17,11 @@
 	</ul>
 
 </div>
+
+<div id="container">
+    <div id="content">
+        <?php echo $contents ?>
+    </div>
+</div>
+
+<?php require_once(TEMPLATES_PATH . "/footer.php"); ?>
